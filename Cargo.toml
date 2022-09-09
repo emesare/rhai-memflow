@@ -1,0 +1,15 @@
+[package]
+name = "rhai-memflow"
+version = "0.1.0"
+authors = ["Dan Killinger <git@dank.anonaddy.com>"]
+edition = "2021"
+readme = "../README.md"
+keywords = ["memflow", "rhai"]
+
+[dependencies]
+rhai = { version = "1.9", features = ["internals"] }
+memflow = { version = "^0.2.0-beta", features = ["plugins", "dummy_mem"] }
+cglue = "0.2"
+
+[dev-dependencies]
+clap = "3.2"
