@@ -3,8 +3,10 @@ name = "rhai-memflow"
 version = "0.1.0"
 authors = ["Dan Killinger <git@dank.anonaddy.com>"]
 edition = "2021"
-readme = "../README.md"
+readme = "README.md"
 keywords = ["memflow", "rhai"]
+description = "Rhai package for memflow"
+repository = "https://github.com/dankope/rhai-memflow/"
 
 [dependencies]
 rhai = { version = "1.9", features = ["internals"] }
