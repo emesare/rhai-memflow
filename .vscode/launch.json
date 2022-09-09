@@ -1,0 +1,140 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'rhai-memflow'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=rhai-memflow"
+                ],
+                "filter": {
+                    "name": "rhai-memflow",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'calculator'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=calculator",
+                    "--package=rhai-memflow"
+                ],
+                "filter": {
+                    "name": "calculator",
+                    "kind": "example"
+                }
+            },
+            "args": [ // Change this!
+                "--os",
+                "native"
+            ],
+            "cwd": "${workspaceFolder}/target/debug/examples/"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'calculator'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=calculator",
+                    "--package=rhai-memflow"
+                ],
+                "filter": {
+                    "name": "calculator",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'memory'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=memory",
+                    "--package=rhai-memflow"
+                ],
+                "filter": {
+                    "name": "memory",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'native'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=native",
+                    "--package=rhai-memflow"
+                ],
+                "filter": {
+                    "name": "native",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'os'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=os",
+                    "--package=rhai-memflow"
+                ],
+                "filter": {
+                    "name": "os",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'process'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=process",
+                    "--package=rhai-memflow"
+                ],
+                "filter": {
+                    "name": "process",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
