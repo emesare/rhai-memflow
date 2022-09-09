@@ -7,6 +7,7 @@ readme = "README.md"
 keywords = ["memflow", "rhai"]
 description = "Rhai package for memflow"
 repository = "https://github.com/dankope/rhai-memflow/"
+license = "MIT"
 
 [dependencies]
 rhai = { version = "1.9", features = ["internals"] }
