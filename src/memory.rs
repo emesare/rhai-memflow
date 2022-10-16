@@ -164,7 +164,7 @@ pub fn read_to_dyn(
             },
             Err(e) => Err(e.as_str().into()),
         },
-        Type::WideString(len) => match mem.read_raw(addr, *len as usize) {
+        Type::WideString(len) => match mem.read_raw(addr, (len * 2) as usize) {
             Ok(raw) => {
                 let raw_u16: Vec<u16> = raw
                     .chunks_exact(2)
