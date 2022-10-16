@@ -5,10 +5,11 @@ use memflow::{
     prelude::{MemoryView, PhysicalMemory},
 };
 use rhai::packages::Package;
-use rhai::{Dynamic, Engine, EvalAltResult, Scope};
+use rhai::{Dynamic, Engine, EvalAltResult, ImmutableString, Scope};
 use rhai_memflow::memory::{read_to_dyn, write_from_dyn};
 use rhai_memflow::native::Type;
 use rhai_memflow::MemflowPackage;
+use widestring::U16String;
 
 #[test]
 fn test_memory() -> Result<(), Box<EvalAltResult>> {
@@ -42,6 +43,9 @@ fn test_memory() -> Result<(), Box<EvalAltResult>> {
     let mut mem = DummyMemory::new(size::mb(64)).into_phys_view();
     mem.write::<i32>(0.into(), &16).unwrap();
     mem.write::<i32>(16.into(), &420).unwrap();
+    mem.write::<[u8]>(32.into(), "test".as_bytes()).unwrap();
+    mem.write::<[u16]>(64.into(), U16String::from_str("test").as_slice())
+        .unwrap();
 
     let mut scope = Scope::new();
     scope.push_constant("MEMORY", mem);
@@ -62,6 +66,24 @@ fn test_memory() -> Result<(), Box<EvalAltResult>> {
             r#"native Test { ^ 16, num: Int32 }; MEMORY.read(Test, addr(0)).num"#
         )?,
         420
+    );
+
+    // Read string works
+    assert_eq!(
+        engine.eval_with_scope::<ImmutableString>(
+            &mut scope,
+            r#"MEMORY.read(String(4), addr(32))"#
+        )?,
+        "test"
+    );
+
+    // Read widestring works
+    assert_eq!(
+        engine.eval_with_scope::<ImmutableString>(
+            &mut scope,
+            r#"MEMORY.read(WideString(4), addr(64))"#
+        )?,
+        "test"
     );
 
     // Write works
