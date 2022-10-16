@@ -5,6 +5,7 @@ use memflow::prelude::MemoryView;
 use memflow::types::Address;
 
 use rhai::plugin::*;
+use widestring::U16String;
 
 use super::native::Type;
 
@@ -159,11 +160,24 @@ pub fn read_to_dyn(
         Type::String(len) => match mem.read_char_array(addr, *len as usize) {
             Ok(strn) => match Dynamic::from_str(&strn) {
                 Ok(dystr) => Ok(dystr),
-                Err(_) => Err("parsing string from shared_mem.borrow()ory failed".into()),
+                Err(_) => Err("parsing string failed".into()),
             },
             Err(e) => Err(e.as_str().into()),
         },
-        Type::WideString(_) => todo!("Support wide strings"),
+        Type::WideString(len) => match mem.read_raw(addr, *len as usize) {
+            Ok(raw) => {
+                let raw_u16: Vec<u16> = raw
+                    .chunks_exact(2)
+                    .into_iter()
+                    .map(|a| u16::from_ne_bytes([a[0], a[1]]))
+                    .collect();
+                match U16String::from_vec(raw_u16).to_string() {
+                    Ok(dystr) => Ok(dystr.into()),
+                    Err(_) => Err("parsing widestring failed".into()),
+                }
+            }
+            Err(e) => Err(e.as_str().into()),
+        },
         Type::Struct(n) => {
             let mut map = rhai::Map::new();
 
@@ -249,7 +263,17 @@ pub fn write_from_dyn(
             }
             Err(_) => todo!("return error"),
         },
-        Type::WideString(_) => todo!("Support wide strings"),
+        Type::WideString(len) => match val.into_string() {
+            Ok(str) => {
+                if (*len as usize) < str.len() * 2 {
+                    mem.write(addr, U16String::from_str(&str).as_slice())
+                        .map_err(|e| Box::new(e.as_str().into()))
+                } else {
+                    todo!("return error, widestring too long")
+                }
+            }
+            Err(_) => todo!("return error"),
+        },
         Type::Struct(n) => {
             if let Some(map) = val.try_cast::<rhai::Map>() {
                 // TODO: Wasteful clone due to ref.
