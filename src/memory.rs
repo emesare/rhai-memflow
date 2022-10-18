@@ -171,10 +171,7 @@ pub fn read_to_dyn(
                     .into_iter()
                     .map(|a| u16::from_ne_bytes([a[0], a[1]]))
                     .collect();
-                match U16String::from_vec(raw_u16).to_string() {
-                    Ok(dystr) => Ok(dystr.into()),
-                    Err(_) => Err("parsing widestring failed".into()),
-                }
+                Ok(U16String::from_vec(raw_u16).to_string_lossy().into())
             }
             Err(e) => Err(e.as_str().into()),
         },
