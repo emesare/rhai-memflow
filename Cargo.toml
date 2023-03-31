@@ -1,12 +1,12 @@
 [package]
 name = "rhai-memflow"
 version = "0.1.2"
-authors = ["Dan Killinger <git@dank.anonaddy.com>"]
+authors = ["Mason Reed <msr@emesare.com>"]
 edition = "2021"
 readme = "README.md"
 keywords = ["memflow", "rhai"]
 description = "Rhai package for memflow"
-repository = "https://github.com/dankope/rhai-memflow/"
+repository = "https://github.com/emesare/rhai-memflow/"
 license = "MIT"
 
 [dependencies]
